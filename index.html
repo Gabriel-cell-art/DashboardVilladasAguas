@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Villa das Águas | Provecta VGV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<style>
+:root{
+  --bg:#f4f5f7; --card:#ffffff; --border:#e7e9ee; --border-2:#eef0f4;
+  --ink:#16233f; --ink-soft:#606a7b; --ink-mute:#8b93a3;
+  --navy:#12295a; --navy-d:#0d1c40; --blue:#2b57d6; --blue-l:#5b8def;
+  --gold:#b7892b; --gold-bar:#c9a94a; --crimson:#e11d5b;
+  --green:#16a37b;
+  --mint-bg:#eefaf4; --mint-bd:#cdeede;
+  --gray-bg:#f1f3f5; --gray-bd:#e6e9ee;
+  --cream-bg:#fdfaef; --cream-bd:#f0e7c9;
+  --pink-bg:#fdeef3; --pink-bd:#f7cdda;
+  --blue-bg:#eff4fb; --blue-bd:#d7e3f5;
+  --radius:16px; --shadow:0 1px 2px rgba(16,25,45,.04),0 6px 20px rgba(16,25,45,.05);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1440px;margin:0 auto;padding:26px 26px 60px}
+a{color:inherit}
+.hidden{display:none!important}
+
+/* ---------- header ---------- */
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;
+  padding-bottom:18px;border-bottom:1px solid var(--border);margin-bottom:22px}
+.brand{font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--gold);margin:0 0 6px}
+h1.title{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:0;color:var(--ink)}
+.subtitle{color:var(--ink-soft);margin:4px 0 0;font-size:15px}
+.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.segment{display:flex;background:#fff;border:1px solid var(--border);border-radius:12px;padding:4px;gap:2px;box-shadow:var(--shadow)}
+.seg-btn{border:0;background:transparent;color:var(--ink-soft);font:inherit;font-size:14px;font-weight:600;
+  padding:8px 14px;border-radius:9px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.seg-btn.active{background:var(--navy-d);color:#fff}
+.seg-btn:hover:not(.active){background:#f3f4f7}
+.btn{display:flex;align-items:center;gap:8px;border:1px solid var(--border);background:#fff;color:var(--ink);
+  font:inherit;font-size:14px;font-weight:600;padding:10px 15px;border-radius:12px;cursor:pointer;box-shadow:var(--shadow)}
+.btn:hover{background:#f7f8fa}
+.btn svg{width:16px;height:16px}
+
+/* ---------- kpi grid ---------- */
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:22px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 18px 16px;box-shadow:var(--shadow);min-height:132px;display:flex;flex-direction:column}
+.kpi .k-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.kpi .k-label{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--ink-mute);text-transform:uppercase}
+.kpi .k-badge{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex:none}
+.kpi .k-value{font-size:29px;font-weight:800;letter-spacing:-.02em;margin:12px 0 0;line-height:1}
+.kpi .k-sub{font-size:12.5px;color:var(--ink-soft);margin-top:6px}
+.kpi .k-meta{margin-top:auto;padding-top:12px}
+.meta-row{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-soft);margin-bottom:5px}
+.meta-row b{color:var(--ink)}
+.bar{height:6px;background:#eef0f4;border-radius:6px;overflow:hidden}
+.bar > i{display:block;height:100%;background:var(--gold-bar);border-radius:6px}
+.badge-gray{background:#eef0f4;color:#5b6472}
+.badge-gold{background:#f6edd4;color:var(--gold)}
+.badge-mint{background:#e4f6ee;color:var(--green)}
+.badge-pink{background:#fbe1ea;color:var(--crimson)}
+.badge-blue{background:#e6eefb;color:var(--blue)}
+
+/* ---------- tabs ---------- */
+.tabs{display:inline-flex;background:#eef0f3;border-radius:12px;padding:4px;gap:2px;margin-bottom:20px}
+.tab{border:0;background:transparent;color:var(--ink-soft);font:inherit;font-size:14.5px;font-weight:600;padding:9px 16px;border-radius:9px;cursor:pointer}
+.tab.active{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(16,25,45,.12)}
+
+/* ---------- panels / cards ---------- */
+.panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-bottom:18px}
+.panel h3{font-size:16px;font-weight:700;margin:0 0 16px;color:var(--ink)}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:18px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-bottom:18px}
+.stat{border-radius:var(--radius);padding:20px;border:1px solid var(--border)}
+.stat .s-label{font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--ink-mute);text-transform:uppercase}
+.stat .s-value{font-size:28px;font-weight:800;letter-spacing:-.02em;margin:10px 0 4px;line-height:1}
+.stat .s-sub{font-size:12.5px;color:var(--ink-soft)}
+.stat.mint{background:var(--mint-bg);border-color:var(--mint-bd)}
+.stat.gray{background:var(--gray-bg);border-color:var(--gray-bd)}
+.stat.cream{background:var(--cream-bg);border-color:var(--cream-bd)}
+.stat.pink{background:var(--pink-bg);border-color:var(--pink-bd)}
+.stat.pink .s-value{color:var(--crimson)}
+
+/* funnel stage cards */
+.funnel-cards{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+.fc{border:1px solid var(--cream-bd);background:var(--cream-bg);border-radius:12px;padding:14px 12px}
+.fc.first{background:var(--gray-bg);border-color:var(--gray-bd)}
+.fc.win{background:var(--mint-bg);border-color:var(--mint-bd)}
+.fc .fc-label{font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--ink-mute);text-transform:uppercase}
+.fc .fc-value{font-size:26px;font-weight:800;margin:8px 0 4px;line-height:1}
+.fc .fc-sub{font-size:11.5px;color:var(--ink-soft)}
+.fc .fc-next{font-size:11.5px;color:var(--ink-mute);margin-top:6px}
+.lost-bar{margin-top:14px;background:var(--pink-bg);border:1px solid var(--pink-bd);border-radius:12px;padding:14px 18px;
+  display:flex;justify-content:space-between;align-items:center}
+.lost-bar .lb-label{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--crimson);text-transform:uppercase}
+.lost-bar .lb-value{font-size:26px;font-weight:800;color:var(--ink);margin-top:6px}
+.lost-bar .lb-pct{font-size:13px;color:var(--ink-soft)}
+
+/* chart holders */
+.chart{width:100%;height:320px}
+.chart.tall{height:360px}
+.chart.short{height:280px}
+
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;color:var(--ink-mute);font-weight:600;font-size:12.5px;padding:10px 12px;border-bottom:1px solid var(--border)}
+td{padding:12px;border-bottom:1px solid var(--border-2);color:var(--ink)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:#fafbfc}
+.tbl-scroll{overflow-x:auto}
+.strong td{font-weight:600}
+
+/* pills */
+.pill{display:inline-flex;align-items:center;padding:4px 11px;border-radius:999px;font-size:11.5px;font-weight:700;white-space:nowrap}
+.pill-triagem{background:#fbe1ea;color:var(--crimson)}
+.pill-atendimento{background:#fdf0d9;color:#b7892b}
+.pill-agendada{background:#e4f6ee;color:var(--green)}
+.pill-realizada{background:#e6eefb;color:var(--blue)}
+.pill-perdido{background:#fbe1ea;color:var(--crimson)}
+.pill-ganho{background:#e4f6ee;color:var(--green)}
+.pill-default{background:#eef0f4;color:#5b6472}
+.pill-qualificado{background:#e4f6ee;color:var(--green)}
+.pill-desqualificado{background:#fbe1ea;color:var(--crimson)}
+
+/* filters row */
+.filters{display:grid;grid-template-columns:1.4fr repeat(5,1fr);gap:10px;margin-bottom:16px}
+.filters input,.filters select{border:1px solid var(--border);border-radius:10px;padding:10px 12px;font:inherit;font-size:13.5px;background:#fff;color:var(--ink);width:100%}
+.filters input::placeholder{color:var(--ink-mute)}
+
+/* efficiency cards row */
+.eff-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+
+/* budget distribution bars */
+.dist-row{margin-bottom:16px}
+.dist-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;font-size:13.5px}
+.dist-head .d-left{display:flex;align-items:center;gap:8px;font-weight:600}
+.dist-head .d-right{color:var(--ink-soft)}
+.dist-head .d-right b{color:var(--ink)}
+.dist-track{height:9px;background:#eef0f4;border-radius:6px;overflow:hidden}
+.dist-track > i{display:block;height:100%;border-radius:6px;background:var(--navy-d)}
+.warn{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#b7892b;background:#fdf4de;border:1px solid #f0e2b8;padding:2px 8px;border-radius:8px}
+
+/* insights */
+.insight{background:#f4f7fb;border:1px solid var(--blue-bd);border-radius:12px;padding:14px 16px;margin-bottom:10px;font-size:14px;color:var(--ink);display:flex;gap:10px;align-items:flex-start}
+.insight.warn-box{background:var(--cream-bg);border-color:var(--cream-bd)}
+.insight .i-ico{color:var(--gold);flex:none;margin-top:1px}
+.big-lost{background:var(--pink-bg);border:1px solid var(--pink-bd);border-radius:12px;padding:18px}
+.big-lost .bl-label{font-size:13.5px;font-weight:600;color:var(--ink);margin-bottom:6px}
+.big-lost .bl-value{font-size:30px;font-weight:800;color:var(--crimson);line-height:1}
+.big-lost .bl-sub{font-size:12.5px;color:var(--ink-soft);margin-top:6px}
+
+.neg{color:var(--crimson)}
+.eye{cursor:pointer;color:var(--ink-mute);vertical-align:middle;margin-left:6px}
+.eye:hover{color:var(--blue)}
+.contact-line{font-size:12.5px;line-height:1.5}
+.dash{color:var(--ink-mute)}
+
+/* status banner */
+.banner{border-radius:12px;padding:12px 16px;font-size:13.5px;margin-bottom:18px;display:flex;gap:10px;align-items:flex-start}
+.banner.info{background:var(--blue-bg);border:1px solid var(--blue-bd);color:#26406e}
+.banner.err{background:var(--cream-bg);border:1px solid var(--cream-bd);color:#6b551d}
+.banner b{font-weight:700}
+.banner .b-close{margin-left:auto;cursor:pointer;color:inherit;opacity:.6}
+.banner code{background:rgba(0,0,0,.05);padding:1px 5px;border-radius:5px;font-size:12px}
+
+/* modal */
+.overlay{position:fixed;inset:0;background:rgba(16,25,45,.45);display:flex;align-items:center;justify-content:center;z-index:50;padding:20px}
+.modal{background:#fff;border-radius:18px;padding:26px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(16,25,45,.3)}
+.modal h2{margin:0 0 4px;font-size:20px}
+.modal p{margin:0 0 18px;color:var(--ink-soft);font-size:14px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ink)}
+.field input{width:100%;border:1px solid var(--border);border-radius:10px;padding:11px 12px;font:inherit;font-size:14px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+.btn-primary{background:var(--navy-d);color:#fff;border:0}
+.btn-primary:hover{background:#0a1730}
+
+footer{text-align:center;color:var(--ink-mute);font-size:12.5px;margin-top:30px}
+
+.empty{color:var(--ink-mute);font-size:13.5px;padding:24px 6px;text-align:center}
+
+@media(max-width:1180px){.kpis{grid-template-columns:repeat(3,1fr)}.funnel-cards{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:900px){.grid-2,.grid-3,.eff-cards,.filters{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.funnel-cards{grid-template-columns:repeat(2,1fr)}h1.title{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="top">
+    <div>
+      <p class="brand">PROVECTA VGV</p>
+      <h1 class="title">Villa das Águas</h1>
+      <p class="subtitle">Dashboard comercial e de mídia paga</p>
+    </div>
+    <div class="controls">
+      <div class="segment" id="rangeSeg">
+        <button class="seg-btn" data-range="7">7 dias</button>
+        <button class="seg-btn" data-range="14">14 dias</button>
+        <button class="seg-btn" data-range="30">30 dias</button>
+        <button class="seg-btn active" data-range="all">Tudo</button>
+        <button class="seg-btn" data-range="custom" id="customBtn">📅 Custom</button>
+      </div>
+      <button class="btn" id="metasBtn">◎ Metas</button>
+      <button class="btn" id="refreshBtn">⟳ Atualizar</button>
+    </div>
+  </div>
+
+  <div id="banner"></div>
+
+  <!-- KPI STRIP -->
+  <div class="kpis" id="kpis"></div>
+
+  <!-- TABS -->
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-tab="com">Comercial (Leads)</button>
+    <button class="tab" data-tab="mid">Mídia (Meta Ads)</button>
+    <button class="tab" data-tab="crz">Análise cruzada</button>
+  </div>
+
+  <!-- ============ COMERCIAL ============ -->
+  <div id="tab-com">
+    <div class="grid-3" id="comStats"></div>
+
+    <div class="panel">
+      <h3>Funil comercial</h3>
+      <div class="funnel-cards" id="funnelCards"></div>
+      <div id="lostBar"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Conversão por etapa</h3>
+      <div class="chart" id="chartFunnel"></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel"><h3>Leads por status</h3><div class="chart short" id="chartStatus"></div></div>
+      <div class="panel"><h3>Perfil de investimento</h3><div class="chart short" id="chartPerfil"></div></div>
+    </div>
+    <div class="grid-2">
+      <div class="panel"><h3>Momento de compra</h3><div class="chart short" id="chartMomento"></div></div>
+      <div class="panel"><h3>Qualificação (pós-triagem)</h3><div class="chart short" id="chartQualif"></div></div>
+    </div>
+
+    <div class="panel"><h3>Motivo de perda</h3><div class="chart short" id="chartMotivo"></div></div>
+    <div class="panel"><h3>Leads captados por dia</h3><div class="chart short" id="chartLeadsDay"></div></div>
+
+    <div class="panel">
+      <h3>Eficiência comercial</h3>
+      <div class="eff-cards" id="effCards"></div>
+      <h3 style="margin-top:6px">Desempenho por corretor</h3>
+      <div class="tbl-scroll"><table id="corretorTbl"></table></div>
+    </div>
+
+    <div class="panel">
+      <h3>Leads</h3>
+      <div class="filters">
+        <input id="fSearch" placeholder="Buscar por nome...">
+        <select id="fStatus"></select>
+        <select id="fCorretor"></select>
+        <select id="fPerfil"></select>
+        <select id="fQualif"></select>
+        <select id="fPlat"></select>
+      </div>
+      <div class="tbl-scroll"><table id="leadsTbl"></table></div>
+    </div>
+  </div>
+
+  <!-- ============ MIDIA ============ -->
+  <div id="tab-mid" class="hidden">
+    <div class="grid-3" id="midStats" style="grid-template-columns:repeat(4,1fr)"></div>
+    <div class="panel"><h3>Investimento e leads por dia</h3><div class="chart" id="chartInvestDay"></div></div>
+    <div class="grid-2">
+      <div class="panel"><h3>Por conjunto de anúncios</h3><div class="chart short" id="chartConjunto"></div></div>
+      <div class="panel"><h3>Por criativo</h3><div class="chart short" id="chartCriativo"></div><div id="criativoWarn"></div></div>
+    </div>
+    <div class="panel"><h3>Distribuição de budget por criativo</h3><div id="budgetDist"></div></div>
+    <div class="panel"><h3>Desempenho por conjunto</h3><div class="tbl-scroll"><table id="conjuntoTbl"></table></div></div>
+    <div class="panel"><h3>Desempenho por criativo</h3><div class="tbl-scroll"><table id="criativoTbl"></table></div></div>
+    <div class="panel"><h3>Detalhamento diário</h3><div class="tbl-scroll"><table id="dailyTbl"></table></div></div>
+  </div>
+
+  <!-- ============ ANALISE CRUZADA ============ -->
+  <div id="tab-crz" class="hidden">
+    <div class="panel">
+      <h3>💡 Insights e recomendações</h3>
+      <div id="insights"></div>
+    </div>
+    <div class="panel"><h3>Cruzamento por conjunto de anúncios</h3><div class="tbl-scroll"><table id="crossConjuntoTbl"></table></div></div>
+    <div class="panel"><h3>Cruzamento por criativo</h3><div class="tbl-scroll"><table id="crossCriativoTbl"></table></div></div>
+  </div>
+
+  <footer>Dados carregados em tempo real via Google Sheets · © Provecta VGV</footer>
+</div>
+
+<!-- METAS MODAL -->
+<div class="overlay hidden" id="metasModal">
+  <div class="modal">
+    <h2>Metas</h2>
+    <p>Defina os alvos usados nas barras de progresso.</p>
+    <div class="field"><label>Meta de leads</label><input type="number" id="mLeads"></div>
+    <div class="field"><label>Meta de visitas realizadas</label><input type="number" id="mVisitas"></div>
+    <div class="field"><label>Meta de VGV (R$)</label><input type="number" id="mVgv"></div>
+    <div class="modal-actions">
+      <button class="btn" id="metasCancel">Cancelar</button>
+      <button class="btn btn-primary" id="metasSave">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================== CONFIG ================== */
+const CONFIG = {
+  SHEET_ID: "1eGAWE2m5JfWZdBToHUhPoIkE6EtQNNyRO3eclk4Cmww", // planilha Villa das Águas
+  LEADS_TAB: "Página1",        // aba de leads
+  MEDIA_TAB: "Dados Meta Ads", // aba de mídia (ajuste aqui se o nome for outro)
+};
+const gvizUrl = (tab) =>
+  `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tab)}`;
+
+/* Snapshot local dos leads atuais (para o preview nunca ficar vazio;
+   ao publicar/hospedar, o fetch ao vivo substitui isto). */
+const SEED_LEADS = [
+  {id:"l:1620608479594218",created_time:"2026-07-15T22:42:25-05:00",ad_name:"03",adset_name:"01",campaign_name:"Leads - Formulário",platform:"fb",momento:"ainda_não_sei",nome:"Ivana Morais",whatsapp:"+557181860340",email:"nolamel@hotmail.com",status:"ATENDIMENTO",classificacao:""},
+  {id:"l:1509104757632539",created_time:"2026-07-16T08:56:29-05:00",ad_name:"03",adset_name:"01",campaign_name:"Leads - Formulário",platform:"fb",momento:"nos_próximos_dias",nome:"Attila Pena",whatsapp:"+557192274632",email:"attilapena@petrobras.com.br",status:"ATENDIMENTO",classificacao:"QUALIFICADO"},
+  {id:"l:1520536112885544",created_time:"2026-07-16T10:33:02-05:00",ad_name:"03",adset_name:"01",campaign_name:"Leads - Formulário",platform:"ig",momento:"nos_próximos_dias",nome:"Fatima Barreto",whatsapp:"+5571996822036",email:"fatima.lavinia@hotmail.com",status:"ATENDIMENTO",classificacao:""},
+  {id:"l:2304202510388577",created_time:"2026-07-16T11:08:00-05:00",ad_name:"03",adset_name:"01",campaign_name:"Leads - Formulário",platform:"fb",momento:"já_visitei_e_quero_comprar",nome:"Kleber Caldeira",whatsapp:"+557196779549",email:"kmcaldeira@gmail.com",status:"ATENDIMENTO",classificacao:""},
+];
+
+/* ================== STATE ================== */
+const state = {
+  leads: [], media: [], range: "all", from: null, to: null,
+  metas: { leads: 100, visitas: 10, vgv: 1000000 },
+  reveal: new Set(), live: false,
+  filters: { search:"", status:"", corretor:"", perfil:"", qualif:"", plat:"" },
+};
+const charts = {};
+
+/* ================== HELPERS ================== */
+const norm = s => (s||"").toString().toLowerCase()
+  .normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9?]/g,"");
+const brl = n => "R$ " + (Number(n)||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
+const pct = (a,b) => b>0 ? (a/b*100) : 0;
+const pctStr = (a,b) => (pct(a,b)).toFixed(1)+"%";
+const el = id => document.getElementById(id);
+function num(v){
+  if(v==null) return 0;
+  let s=v.toString().trim().replace(/r\$|%/gi,"").replace(/\s/g,"");
+  if(s==="") return 0;
+  if(s.includes(",")&&s.includes(".")) s=s.replace(/\./g,"").replace(",",".");
+  else if(s.includes(",")) s=s.replace(",",".");
+  const n=parseFloat(s); return isNaN(n)?0:n;
+}
+function dayOf(iso){ if(!iso) return ""; const s=iso.toString(); 
+  if(s.includes("T")) return s.split("T")[0];
+  const m=s.match(/(\d{2})\/(\d{2})\/(\d{4})/); if(m) return `${m[3]}-${m[2]}-${m[1]}`;
+  const d=new Date(s); return isNaN(d)?"":d.toISOString().split("T")[0];
+}
+function fmtDateBR(iso){ const d=dayOf(iso); if(!d) return "—"; const [y,m,dd]=d.split("-"); return `${dd}/${m}/${y}`; }
+function fmtDateTimeBR(iso){ if(!iso) return "—"; const d=new Date(iso); if(isNaN(d)) return fmtDateBR(iso);
+  return d.toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit",second:"2-digit"}); }
+
+/* robust CSV parse */
+function parseCSV(text){
+  const rows=[]; let row=[],cur="",q=false;
+  for(let i=0;i<text.length;i++){const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){cur+='"';i++;} else q=false; } else cur+=c; }
+    else { if(c==='"') q=true; else if(c===","){row.push(cur);cur="";}
+      else if(c==="\n"){row.push(cur);rows.push(row);row=[];cur="";}
+      else if(c==="\r"){} else cur+=c; }
+  }
+  if(cur!==""||row.length){row.push(cur);rows.push(row);}
+  return rows;
+}
+
+/* header alias maps -> canonical key */
+const LEAD_ALIASES = {
+  id:["id"], created_time:["createdtime","data","captadoem"],
+  ad_name:["adname","anuncio","criativo"], adset_name:["adsetname","conjunto"],
+  campaign_name:["campaignname","campanha"], platform:["platform","plataforma"],
+  momento:["emqualmomentopensaemfazeresseinvestimento","momento","intencao"],
+  nome:["nome","completonome","nomecompleto","fullname"],
+  whatsapp:["numerodowhatsapp","whatsapp","telefone","phone"],
+  email:["email"], status:["leadstatus","status"], perfil:["perfil"],
+  classificacao:["classificacao"], data1:["data1contato","dataprimeirocontato","data1ocontato"],
+  entrada:["tementrada","entrada"], corretor:["corretor"], obs:["obs","observacao"],
+  motivo:["motivodeperda","motivo"], fup:["proximofup","fup"], vgv:["vgv"],
+};
+const MEDIA_ALIASES = {
+  dia:["dia","date","data","day"], conjunto:["conjunto","adsetname","adset"],
+  criativo:["criativo","adname","anuncio","creative"], campanha:["campanha","campaignname","campaign"],
+  investido:["investido","spend","valorgasto","amountspent","gasto","investimento"],
+  impressoes:["impressoes","impressions"], alcance:["alcance","reach"],
+  cliques:["cliques","clicks","linkclicks"], ctr:["ctr"], frequencia:["frequencia","frequency"],
+  leads:["leads","resultados","results"], cpl:["cpl","custoporlead","costperlead"], obs:["obs","observacao"],
+};
+function mapRows(rows, aliases){
+  if(!rows.length) return [];
+  const header = rows[0].map(norm);
+  const idx = {};
+  for(const key in aliases){
+    for(const a of aliases[key]){ const i=header.indexOf(a); if(i>-1){ idx[key]=i; break; } }
+  }
+  const out=[];
+  for(let r=1;r<rows.length;r++){
+    const row=rows[r]; if(!row.some(c=>(c||"").trim()!=="")) continue;
+    const o={}; for(const key in idx) o[key]=(row[idx[key]]||"").trim();
+    out.push(o);
+  }
+  return out;
+}
+
+/* ================== FETCH ================== */
+async function fetchTab(tab, aliases){
+  const res = await fetch(gvizUrl(tab), {cache:"no-store"});
+  if(!res.ok) throw new Error("HTTP "+res.status);
+  const txt = await res.text();
+  return mapRows(parseCSV(txt), aliases);
+}
+async function loadLive(){
+  const leads = await fetchTab(CONFIG.LEADS_TAB, LEAD_ALIASES);
+  let media = [];
+  try { media = await fetchTab(CONFIG.MEDIA_TAB, MEDIA_ALIASES); } catch(e){ media=[]; }
+  state.leads = leads.length ? leads : SEED_LEADS.slice();
+  state.media = media;
+  state.live = true;
+}
+
+/* ================== STATUS NORMALIZATION ================== */
+const STAGE_ORDER = ["EM TRIAGEM","ATENDIMENTO","VISITA AGENDADA","VISITA REALIZADA","PROPOSTA","NEGOCIAÇÃO","GANHO"];
+function stageOf(s){
+  const n=norm(s);
+  if(!n) return "EM TRIAGEM";
+  if(n.includes("triagem")) return "EM TRIAGEM";
+  if(n.includes("atendimento")) return "ATENDIMENTO";
+  if(n.includes("agendad")) return "VISITA AGENDADA";
+  if(n.includes("realizad")) return "VISITA REALIZADA";
+  if(n.includes("proposta")) return "PROPOSTA";
+  if(n.includes("negocia")) return "NEGOCIAÇÃO";
+  if(n.includes("ganho")||n.includes("vendido")||n.includes("fechado")) return "GANHO";
+  if(n.includes("perd")) return "PERDIDO";
+  return s.toUpperCase();
+}
+const isLost = s => stageOf(s)==="PERDIDO";
+const isWon  = s => stageOf(s)==="GANHO";
+const isHot  = s => ["ATENDIMENTO","VISITA AGENDADA"].includes(stageOf(s));
+
+/* momento labels */
+function momentoLabel(m){
+  const n=norm(m);
+  if(n.includes("javisitei")||n.includes("querocomprar")) return "Já visitei e quero comprar";
+  if(n.includes("proximosdias")) return "Nos próximos dias";
+  if(n.includes("proximosmeses")) return "Nos próximos meses";
+  if(n.includes("proximosanos")) return "Nos próximos anos";
+  if(n.includes("aindanaosei")) return "Ainda não sei";
+  return m || "Não informado";
+}
+
+/* ================== DATE RANGE FILTER ================== */
+function rangeStart(){
+  if(state.range==="all") return null;
+  if(state.range==="custom") return state.from ? new Date(state.from) : null;
+  const d=new Date(); d.setDate(d.getDate()-Number(state.range)); return d;
+}
+function rangeEnd(){ return (state.range==="custom" && state.to) ? new Date(state.to+"T23:59:59") : null; }
+function inRange(iso){
+  const d=dayOf(iso); if(!d) return state.range==="all";
+  const t=new Date(d+"T12:00:00"); const s=rangeStart(),e=rangeEnd();
+  if(s && t<s) return false; if(e && t>e) return false; return true;
+}
+const leadsInRange = () => state.leads.filter(l=>inRange(l.created_time));
+const mediaInRange = () => state.media.filter(m=>inRange(m.dia));
+
+/* ================== SVG ICONS ================== */
+const IC = {
+  users:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  dollar:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+  target:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>',
+  userc:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>',
+  fire:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2s4 4 4 8a4 4 0 0 1-8 0c0-1 .5-2 .5-2S6 10 6 14a6 6 0 0 0 12 0c0-5-6-12-6-12z"/></svg>',
+  cal:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+  check:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+  bank:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="21" x2="21" y2="21"/><path d="M3 10l9-6 9 6"/><line x1="5" y1="10" x2="5" y2="21"/><line x1="12" y1="10" x2="12" y2="21"/><line x1="19" y1="10" x2="19" y2="21"/></svg>',
+  x:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+  phone:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.9.36 1.78.68 2.6a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.48-1.25a2 2 0 0 1 2.11-.45c.82.32 1.7.55 2.6.68A2 2 0 0 1 22 16.92z"/><line x1="1" y1="1" x2="23" y2="23"/></svg>',
+  eye:'<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+};
+
+/* palette for echarts */
+const P = { navy:"#12295a", navyD:"#0d1c40", blue:"#2b57d6", blueL:"#5b8def", gold:"#c9a94a", crimson:"#e11d5b", green:"#16a37b", grid:"#eef0f4", axis:"#8b93a3" };
+const baseGrid = { left:44, right:20, top:24, bottom:34 };
+const axisText = { color:P.axis, fontSize:11 };
+
+/* ================== COMPUTE ================== */
+function computeCommercial(){
+  const L = leadsInRange();
+  const total=L.length;
+  const perdidos=L.filter(l=>isLost(l.status)).length;
+  const ganhos=L.filter(l=>isWon(l.status));
+  const emAberto=L.filter(l=>!isLost(l.status)&&!isWon(l.status)).length;
+  const quentes=L.filter(l=>isHot(l.status)).length;
+  const visitasRealizadas=L.filter(l=>stageOf(l.status)==="VISITA REALIZADA").length;
+  const agendadas=L.filter(l=>stageOf(l.status)==="VISITA AGENDADA").length;
+  const vgv=ganhos.reduce((s,l)=>s+num(l.vgv),0);
+  // tentativas esgotadas
+  const perdidosArr=L.filter(l=>isLost(l.status));
+  const tentEsg=perdidosArr.filter(l=>norm(l.motivo).includes("tentativa")).length;
+  // funnel
+  const stageCount={}; STAGE_ORDER.forEach(s=>stageCount[s]=0);
+  L.forEach(l=>{ const st=stageOf(l.status); if(st in stageCount) stageCount[st]++; });
+  return {L,total,perdidos,ganhos:ganhos.length,vgv,emAberto,quentes,visitasRealizadas,agendadas,tentEsg,perdidosArr,stageCount};
+}
+function computeMedia(){
+  const M=mediaInRange();
+  const invest=M.reduce((s,m)=>s+num(m.investido),0);
+  const days=new Set(M.map(m=>dayOf(m.dia)).filter(Boolean));
+  return {M,invest,dias:days.size};
+}
+
+/* group leads by field (adset/ad) with commercial sub-metrics */
+function groupLeadsBy(field){
+  const L=leadsInRange(); const g={};
+  L.forEach(l=>{ const k=(l[field]||"—").trim()||"—";
+    g[k]=g[k]||{leads:0,quentes:0,agendadas:0,realizadas:0,vendas:0,perdidos:0};
+    g[k].leads++; if(isHot(l.status))g[k].quentes++;
+    const st=stageOf(l.status);
+    if(st==="VISITA AGENDADA")g[k].agendadas++;
+    if(st==="VISITA REALIZADA")g[k].realizadas++;
+    if(st==="GANHO")g[k].vendas++;
+    if(st==="PERDIDO")g[k].perdidos++;
+  });
+  return g;
+}
+function mediaByField(field){
+  const M=mediaInRange(); const g={};
+  M.forEach(m=>{ const k=(m[field]||"—").trim()||"—";
+    g[k]=g[k]||{investido:0,impressoes:0,alcance:0,cliques:0,leads:0,rowsCtr:[],rowsFreq:[]};
+    g[k].investido+=num(m.investido); g[k].impressoes+=num(m.impressoes);
+    g[k].alcance+=num(m.alcance); g[k].cliques+=num(m.cliques); g[k].leads+=num(m.leads);
+    if(m.ctr) g[k].rowsCtr.push(num(m.ctr)); if(m.frequencia) g[k].rowsFreq.push(num(m.frequencia));
+  });
+  return g;
+}
+const criativoLabel = k => { const n=k.replace(/^0+/,""); return /^\d+$/.test(k.trim())?("Criativo "+ (parseInt(k,10))):k; };
+
+/* ================== RENDER: KPIs ================== */
+function renderKPIs(){
+  const c=computeCommercial(), m=computeMedia();
+  const cpl = c.total>0 ? m.invest/c.total : 0;
+  const cards=[
+    kpiCard("LEADS", c.total, {badge:"badge-gray",ic:IC.users, meta:{val:c.total,target:state.metas.leads}}),
+    kpiCard("INVESTIDO", null, {badge:"badge-gray",ic:IC.dollar, value:brl(m.invest)}),
+    kpiCard("CPL", null, {badge:"badge-gold",ic:IC.target, value:brl(cpl), sub:"Investimento ÷ leads"}),
+    kpiCard("LEADS EM ABERTO", c.emAberto, {badge:"badge-gray",ic:IC.userc, sub:"≠ perdido e ≠ ganho"}),
+    kpiCard("PIPELINE QUENTE", c.quentes, {badge:"badge-gold",ic:IC.fire, sub:"Atendimento + visita agendada"}),
+    kpiCard("VISITAS REALIZADAS", c.visitasRealizadas, {badge:"badge-mint",ic:IC.cal, meta:{val:c.visitasRealizadas,target:state.metas.visitas}}),
+    kpiCard("VENDAS (GANHO)", c.ganhos, {badge:"badge-mint",ic:IC.check}),
+    kpiCard("VGV", null, {badge:"badge-mint",ic:IC.bank, value:brl(c.vgv), sub:`${c.ganhos} vendas ganhas`, meta:{val:c.vgv,target:state.metas.vgv}}),
+    kpiCard("TAXA DE PERDA", null, {badge:"badge-pink",ic:IC.x, value:pctStr(c.perdidos,c.total), sub:`${c.perdidos} perdidos`}),
+    kpiCard("TENTATIVAS ESGOTADAS", null, {badge:"badge-gold",ic:IC.phone, value:pctStr(c.tentEsg,c.perdidos), sub:`${c.tentEsg} de ${c.perdidos} perdidos · contatabilidade`}),
+  ];
+  el("kpis").innerHTML=cards.join("");
+}
+function kpiCard(label,value,opt={}){
+  const val = opt.value!=null ? opt.value : (value!=null? value.toLocaleString("pt-BR") : "—");
+  let meta="";
+  if(opt.meta){ const p=Math.min(100,pct(opt.meta.val,opt.meta.target));
+    meta=`<div class="k-meta"><div class="meta-row"><span>Meta</span><b>${p.toFixed(0)}%</b></div>
+      <div class="bar"><i style="width:${p.toFixed(0)}%"></i></div></div>`; }
+  const sub = opt.sub? `<div class="k-sub">${opt.sub}</div>`:"";
+  return `<div class="kpi"><div class="k-head"><span class="k-label">${label}</span>
+    <span class="k-badge ${opt.badge}">${opt.ic}</span></div>
+    <div class="k-value">${val}</div>${sub}${meta}</div>`;
+}
+
+/* ================== RENDER: COMERCIAL ================== */
+function renderComercial(){
+  const c=computeCommercial();
+  const ticket = c.ganhos>0 ? c.vgv/c.ganhos : 0;
+  el("comStats").innerHTML=`
+    ${stat("mint","VGV GERADO",brl(c.vgv),`${c.ganhos} vendas ganhas`)}
+    ${stat("gray","TICKET MÉDIO",brl(ticket),"Média por venda fechada")}
+    ${stat("cream","TOTAL DE LEADS",c.total.toLocaleString("pt-BR"),"Base do funil")}`;
+
+  // funnel cards
+  const sc=c.stageCount, total=c.total||1;
+  let fc="";
+  STAGE_ORDER.forEach((st,i)=>{
+    const v=sc[st], nextV = i<STAGE_ORDER.length-1 ? sc[STAGE_ORDER[i+1]] : null;
+    const cls = i===0?"first":(st==="GANHO"?"win":"");
+    const next = nextV!=null ? `→ ${v>0?(nextV/v*100).toFixed(1):"0.0"}% p/ próxima` : "&nbsp;";
+    fc+=`<div class="fc ${cls}"><div class="fc-label">${st}</div>
+      <div class="fc-value">${v}</div>
+      <div class="fc-sub">${pctStr(v,total)} do total</div>
+      <div class="fc-next">${next}</div></div>`;
+  });
+  el("funnelCards").innerHTML=fc;
+  el("lostBar").innerHTML=`<div class="lost-bar"><div>
+    <div class="lb-label">Perdido (fora do funil)</div><div class="lb-value">${c.perdidos}</div></div>
+    <div class="lb-pct">${pctStr(c.perdidos,total)} do total</div></div>`;
+
+  renderFunnelChart(c);
+  renderStatusChart(c);
+  renderPerfilChart();
+  renderMomentoChart();
+  renderQualifChart();
+  renderMotivoChart(c);
+  renderLeadsDayChart();
+  renderEfficiency(c);
+  renderLeadsTable();
+  populateFilters();
+}
+function stat(cls,label,value,sub){
+  return `<div class="stat ${cls}"><div class="s-label">${label}</div>
+    <div class="s-value">${value}</div><div class="s-sub">${sub}</div></div>`;
+}
+
+function renderFunnelChart(c){
+  const reached=STAGE_ORDER.filter(s=>c.stageCount[s]>0);
+  const base=c.stageCount[reached[0]]||1;
+  const data=reached.map(s=>({name:s,value:c.stageCount[s]}));
+  const cols=[P.navyD,P.navy,P.blue,P.blueL,"#7aa5f2","#a9c4f7","#16a37b"];
+  const opt={ tooltip:{trigger:"item",formatter:p=>`${p.name}: ${p.value}`},
+    series:[{type:"funnel",sort:"descending",gap:2,minSize:"14%",maxSize:"100%",
+      left:"5%",right:"5%",top:10,bottom:10,
+      label:{position:"right",color:P.gold,fontSize:12,
+        formatter:p=>{const anterior=data.findIndex(d=>d.name===p.name);
+          const prev=anterior>0?data[anterior-1].value:null;
+          const ofBase=(p.value/base*100).toFixed(1);
+          const ofPrev=prev!=null?` · ${(p.value/prev*100).toFixed(1)}% da anterior`:"";
+          return `${p.name}: ${p.value} (${ofBase}%${ofPrev})`;}},
+      itemStyle:{borderWidth:0},
+      color:cols, data}]};
+  chart("chartFunnel",opt);
+}
+function renderStatusChart(c){
+  const map={}; c.L.forEach(l=>{const s=stageOf(l.status);map[s]=(map[s]||0)+1;});
+  const colByStage={"ATENDIMENTO":P.navyD,"EM TRIAGEM":P.crimson,"VISITA AGENDADA":P.blueL,
+    "PERDIDO":P.gold,"VISITA REALIZADA":P.blue,"GANHO":P.green};
+  const data=Object.entries(map).map(([k,v])=>({name:`${k}: ${v}`,value:v,itemStyle:{color:colByStage[k]||P.navy}}));
+  chart("chartStatus",{ tooltip:{trigger:"item"},
+    series:[{type:"pie",radius:["0%","70%"],center:["50%","52%"],
+      label:{color:P.ink,fontSize:12,formatter:"{b}"},labelLine:{length:8,length2:8},data}]});
+}
+function renderPerfilChart(){
+  const L=leadsInRange(); const map={};
+  L.forEach(l=>{const p=(l.perfil||"").trim()||"Sem perfil";map[p]=(map[p]||0)+1;});
+  const data=Object.entries(map).map(([k,v])=>({name:`${v}`,value:v}));
+  chart("chartPerfil",{ tooltip:{trigger:"item",formatter:p=>`${p.value}`},
+    color:[P.navyD,P.gold,P.blue,P.blueL],
+    series:[{type:"pie",radius:["0%","70%"],center:["50%","52%"],
+      label:{color:P.ink,fontSize:12},data}]});
+}
+function renderMomentoChart(){
+  const L=leadsInRange(); const order=["Já visitei e quero comprar","Nos próximos dias","Nos próximos meses","Ainda não sei","Nos próximos anos"];
+  const map={}; L.forEach(l=>{const m=momentoLabel(l.momento);map[m]=(map[m]||0)+1;});
+  const cats=order.filter(o=>map[o]!=null); Object.keys(map).forEach(k=>{if(!cats.includes(k))cats.push(k);});
+  const data=cats.map(k=>map[k]||0);
+  chart("chartMomento",{ grid:baseGrid, tooltip:{trigger:"axis"},
+    xAxis:{type:"category",data:cats,axisLabel:{...axisText,interval:0,rotate:cats.length>4?20:0,width:90,overflow:"truncate"},axisLine:{lineStyle:{color:P.grid}}},
+    yAxis:{type:"value",axisLabel:axisText,splitLine:{lineStyle:{color:P.grid}}},
+    series:[{type:"bar",data,itemStyle:{color:P.navyD,borderRadius:[3,3,0,0]},barMaxWidth:46}]});
+}
+function renderQualifChart(){
+  const L=leadsInRange(); const map={"Sem classificação":0,"QUALIFICADO":0,"DESQUALIFICADO":0};
+  L.forEach(l=>{const q=(l.classificacao||"").trim();
+    if(!q)map["Sem classificação"]++; else if(norm(q).includes("desqualif"))map["DESQUALIFICADO"]++;
+    else if(norm(q).includes("qualif"))map["QUALIFICADO"]++; else map[q]=(map[q]||0)+1;});
+  const cats=Object.keys(map),data=cats.map(k=>map[k]);
+  chart("chartQualif",{ grid:baseGrid, tooltip:{trigger:"axis"},
+    xAxis:{type:"category",data:cats,axisLabel:{...axisText,interval:0},axisLine:{lineStyle:{color:P.grid}}},
+    yAxis:{type:"value",axisLabel:axisText,splitLine:{lineStyle:{color:P.grid}}},
+    series:[{type:"bar",data,itemStyle:{color:P.gold,borderRadius:[3,3,0,0]},barMaxWidth:60}]});
+}
+function renderMotivoChart(c){
+  const map={}; c.perdidosArr.forEach(l=>{const m=(l.motivo||"").trim();if(m)map[m]=(map[m]||0)+1;});
+  const entries=Object.entries(map).sort((a,b)=>a[1]-b[1]);
+  if(!entries.length){ el("chartMotivo").innerHTML='<div class="empty">Sem motivos de perda registrados no período.</div>'; return; }
+  const cats=entries.map(e=>e[0]),data=entries.map(e=>e[1]);
+  const cols=data.map((v,i)=>i===data.length-1?P.crimson:P.gold);
+  chart("chartMotivo",{ grid:{left:150,right:30,top:16,bottom:30}, tooltip:{trigger:"axis"},
+    xAxis:{type:"value",axisLabel:axisText,splitLine:{lineStyle:{color:P.grid}}},
+    yAxis:{type:"category",data:cats,axisLabel:{...axisText,color:P.blue},axisLine:{lineStyle:{color:P.grid}}},
+    series:[{type:"bar",data:data.map((v,i)=>({value:v,itemStyle:{color:cols[i],borderRadius:[0,4,4,0]}})),barMaxWidth:22}]});
+}
+function renderLeadsDayChart(){
+  const L=leadsInRange(); const map={};
+  L.forEach(l=>{const d=dayOf(l.created_time);if(d)map[d]=(map[d]||0)+1;});
+  const days=Object.keys(map).sort(),data=days.map(d=>map[d]);
+  chart("chartLeadsDay",{ grid:baseGrid, tooltip:{trigger:"axis"},
+    xAxis:{type:"category",data:days,boundaryGap:false,axisLabel:{...axisText},axisLine:{lineStyle:{color:P.grid}}},
+    yAxis:{type:"value",axisLabel:axisText,splitLine:{lineStyle:{color:P.grid}}},
+    series:[{type:"line",data,smooth:true,symbolSize:7,lineStyle:{color:P.navy,width:2.5},
+      itemStyle:{color:P.navy},areaStyle:{color:"rgba(18,41,90,.05)"}}]});
+}
+
+function renderEfficiency(c){
+  const L=leadsInRange();
+  // tempo medio ate 1 contato
+  const withDate=L.filter(l=>l.data1 && dayOf(l.data1));
+  let tempo="—",tempoBase=0;
+  if(withDate.length){
+    const dias=withDate.map(l=>{const a=new Date(dayOf(l.created_time)),b=new Date(dayOf(l.data1));
+      return (b-a)/86400000;}).filter(x=>x>=0);
+    if(dias.length){ tempo=(dias.reduce((s,x)=>s+x,0)/dias.length).toFixed(1)+" dias"; tempoBase=dias.length; }
+  }
+  const agendadas=L.filter(l=>stageOf(l.status)==="VISITA AGENDADA").length;
+  const realizadas=L.filter(l=>stageOf(l.status)==="VISITA REALIZADA").length;
+  const noShow = agendadas>0 ? pctStr(agendadas-realizadas,agendadas) : "0.0%";
+  // risco esfriar
+  const now=new Date();
+  const risco=L.filter(l=>stageOf(l.status)==="EM TRIAGEM" && !l.fup &&
+    ((now-new Date(dayOf(l.created_time)+"T12:00:00"))/86400000)>2).length;
+  el("effCards").innerHTML=`
+    ${stat("gray","TEMPO MÉDIO ATÉ 1º CONTATO",tempo,tempoBase?`Base: ${tempoBase} leads com data preenchida`:"Sem datas de 1º contato preenchidas")}
+    ${stat("pink","TAXA DE NO-SHOW",noShow,`${realizadas} realizadas de ${agendadas} agendadas`)}
+    ${stat("cream","LEADS EM RISCO DE ESFRIAR",String(risco),"> 2 dias em triagem sem FUP")}`;
+
+  // por corretor
+  const g=groupLeadsBy("corretor");
+  const keys=Object.keys(g).sort((a,b)=>g[b].leads-g[a].leads);
+  let rows=keys.map(k=>{const d=g[k];const nm=(k==="—"||!k)?"Sem corretor":k;
+    return `<tr class="strong"><td>${nm}</td>
+      <td class="num">${d.leads}</td><td class="num">${d.quentes}</td>
+      <td class="num">${d.agendadas}</td><td class="num">${d.realizadas}</td>
+      <td class="num">${d.vendas}</td>
+      <td class="num">${pctStr(d.agendadas,d.leads)}</td>
+      <td class="num">${pctStr(d.vendas,d.agendadas)}</td></tr>`;}).join("");
+  if(!keys.length) rows=`<tr><td colspan="8" class="empty">Sem leads no período.</td></tr>`;
+  el("corretorTbl").innerHTML=`<thead><tr><th>Corretor</th><th class="num">Leads</th><th class="num">Quentes</th>
+    <th class="num">V. agendadas</th><th class="num">V. realizadas</th><th class="num">Vendas</th>
+    <th class="num">Lead → visita</th><th class="num">Visita → venda</th></tr></thead><tbody>${rows}</tbody>`;
+}
+
+/* ---- leads table + filters ---- */
+function uniqueVals(fn){ const s=new Set(); leadsInRange().forEach(l=>{const v=fn(l);if(v)s.add(v);}); return [...s].sort(); }
+function populateFilters(){
+  fill("fStatus","Todos status",[...new Set(leadsInRange().map(l=>stageOf(l.status)))].sort());
+  fill("fCorretor","Todos corretores",uniqueVals(l=>l.corretor));
+  fill("fPerfil","Todos perfis",uniqueVals(l=>l.perfil));
+  fill("fQualif","Todas qualificações",[...new Set(leadsInRange().map(l=>(l.classificacao||"").trim()).filter(Boolean))].sort());
+  fill("fPlat","Todas plataformas",uniqueVals(l=>l.platform));
+}
+function fill(id,ph,vals){
+  const cur=state.filters[id.replace("f","").toLowerCase()]||"";
+  el(id).innerHTML=`<option value="">${ph}</option>`+vals.map(v=>`<option ${v===cur?"selected":""}>${v}</option>`).join("");
+}
+function maskEmail(e){ if(!e) return ""; const [u,d]=e.split("@"); if(!d) return e[0]+"***";
+  return u[0]+"*".repeat(Math.max(3,u.length-1))+"@"+d; }
+function maskPhone(p){ const dg=(p||"").replace(/\D/g,""); if(dg.length<5) return p||"";
+  return dg.slice(0,3)+"****"+dg.slice(-2); }
+function statusPill(s){ const st=stageOf(s); const cls={
+  "EM TRIAGEM":"pill-triagem","ATENDIMENTO":"pill-atendimento","VISITA AGENDADA":"pill-agendada",
+  "VISITA REALIZADA":"pill-realizada","PROPOSTA":"pill-realizada","NEGOCIAÇÃO":"pill-realizada",
+  "GANHO":"pill-ganho","PERDIDO":"pill-perdido"}[st]||"pill-default";
+  return `<span class="pill ${cls}">${st}</span>`; }
+function qualifPill(q){ if(!q) return '<span class="dash">—</span>';
+  const cls=norm(q).includes("desqualif")?"pill-desqualificado":(norm(q).includes("qualif")?"pill-qualificado":"pill-default");
+  return `<span class="pill ${cls}">${q}</span>`; }
+function renderLeadsTable(){
+  const f=state.filters;
+  let L=leadsInRange().filter(l=>{
+    if(f.search && !norm(l.nome).includes(norm(f.search))) return false;
+    if(f.status && stageOf(l.status)!==f.status) return false;
+    if(f.corretor && (l.corretor||"")!==f.corretor) return false;
+    if(f.perfil && (l.perfil||"")!==f.perfil) return false;
+    if(f.qualif && (l.classificacao||"").trim()!==f.qualif) return false;
+    if(f.plat && (l.platform||"")!==f.plat) return false;
+    return true;
+  });
+  const rows=L.map((l,i)=>{
+    const shown=state.reveal.has(l.id||String(i));
+    const contact = shown
+      ? `<div class="contact-line">${l.email||""}<br>${l.whatsapp||""}</div>`
+      : `<div class="contact-line">${maskEmail(l.email)}<br>${maskPhone(l.whatsapp)}</div>`;
+    return `<tr>
+      <td><b>${l.nome||"SEM NOME"}</b></td>
+      <td>${fmtDateTimeBR(l.created_time)}</td>
+      <td>${contact}<span class="eye" data-id="${l.id||i}">${IC.eye}</span></td>
+      <td>${l.perfil||'<span class="dash">—</span>'}</td>
+      <td>${qualifPill(l.classificacao)}</td>
+      <td>${momentoLabel(l.momento)}</td>
+      <td>${statusPill(l.status)}</td>
+      <td>${l.corretor||'<span class="dash">—</span>'}</td>
+      <td>${l.entrada||'<span class="dash">—</span>'}</td>
+      <td>${l.fup?fmtDateBR(l.fup):'<span class="dash">—</span>'}</td>
+      <td style="max-width:220px">${l.obs||""}</td></tr>`;
+  }).join("");
+  el("leadsTbl").innerHTML=`<thead><tr><th>Nome</th><th>Captado em</th><th>Contato</th><th>Perfil</th>
+    <th>Classificação</th><th>Intenção</th><th>Status</th><th>Corretor</th><th>Entrada?</th><th>Próximo FUP</th><th>Obs</th></tr></thead>
+    <tbody>${rows||`<tr><td colspan="11" class="empty">Nenhum lead encontrado.</td></tr>`}</tbody>`;
+  el("leadsTbl").querySelectorAll(".eye").forEach(b=>b.onclick=()=>{
+    const id=b.dataset.id; state.reveal.has(id)?state.reveal.delete(id):state.reveal.add(id); renderLeadsTable();});
+}
+
+/* ================== RENDER: MÍDIA ================== */
+function renderMidia(){
+  const c=computeCommercial(),m=computeMedia();
+  const cpl=c.total>0?m.invest/c.total:0;
+  el("midStats").innerHTML=`
+    ${stat("gray","INVESTIDO",brl(m.invest),"")}
+    ${stat("gray","LEADS (MÍDIA)",c.total.toLocaleString("pt-BR"),"")}
+    ${stat("gray","CPL MÉDIO",brl(cpl),"")}
+    ${stat("gray","DIAS VEICULADOS",String(m.dias),"")}`;
+  renderInvestDayChart();
+  renderConjuntoChart();
+  renderCriativoChart();
+  renderBudgetDist();
+  renderMediaTables();
+}
+function renderInvestDayChart(){
+  const M=mediaInRange(),L=leadsInRange();
+  const spendByDay={},leadByDay={};
+  M.forEach(m=>{const d=dayOf(m.dia);if(d)spendByDay[d]=(spendByDay[d]||0)+num(m.investido);});
+  L.forEach(l=>{const d=dayOf(l.created_time);if(d)leadByDay[d]=(leadByDay[d]||0)+1;});
+  const days=[...new Set([...Object.keys(spendByDay),...Object.keys(leadByDay)])].sort();
+  if(!days.length){ el("chartInvestDay").innerHTML='<div class="empty">Sem dados de mídia no período. Verifique a aba de mídia da planilha.</div>'; return; }
+  chart("chartInvestDay",{ grid:{left:50,right:50,top:24,bottom:34}, tooltip:{trigger:"axis"},
+    legend:{data:["Investimento","Leads"],bottom:0,textStyle:{color:P.ink}},
+    xAxis:{type:"category",data:days,axisLabel:axisText,axisLine:{lineStyle:{color:P.grid}}},
+    yAxis:[{type:"value",axisLabel:axisText,splitLine:{lineStyle:{color:P.grid}}},
+           {type:"value",axisLabel:axisText,splitLine:{show:false}}],
+    series:[
+      {name:"Investimento",type:"bar",data:days.map(d=>+(spendByDay[d]||0).toFixed(2)),itemStyle:{color:P.navyD},barMaxWidth:40},
+      {name:"Leads",type:"line",yAxisIndex:1,data:days.map(d=>leadByDay[d]||0),smooth:true,symbolSize:6,lineStyle:{color:P.gold,width:2},itemStyle:{color:P.gold}}]});
+}
+function renderConjuntoChart(){
+  const g=mediaByField("conjunto"); const keys=Object.keys(g).filter(k=>k!=="—");
+  if(!keys.length){ el("chartConjunto").innerHTML='<div class="empty">Sem dados por conjunto.</div>'; return; }
+  chart("chartConjunto",{ grid:baseGrid, tooltip:{trigger:"axis"},
+    legend:{data:["Investimento","CPL"],bottom:0,textStyle:{color:P.ink}},
+    xAxis:{type:"category",data:keys,axisLabel:{...axisText,interval:0},axisLine:{lineStyle:{color:P.grid}}},
+    yAxis:{type:"value",axisLabel:axisText,splitLine:{lineStyle:{color:P.grid}}},
+    series:[
+      {name:"Investimento",type:"bar",data:keys.map(k=>+g[k].investido.toFixed(2)),itemStyle:{color:P.navyD},barMaxWidth:70},
+      {name:"CPL",type:"bar",data:keys.map(k=>+((g[k].leads>0?g[k].investido/g[k].leads:0)).toFixed(2)),itemStyle:{color:P.gold},barMaxWidth:70}]});
+}
+function renderCriativoChart(){
+  const g=mediaByField("criativo"); const keys=Object.keys(g).filter(k=>k!=="—").sort();
+  el("criativoWarn").innerHTML="";
+  if(!keys.length){ el("chartCriativo").innerHTML='<div class="empty">Sem dados por criativo.</div>'; return; }
+  const labels=keys.map(criativoLabel);
+  chart("chartCriativo",{ grid:baseGrid, tooltip:{trigger:"axis"},
+    legend:{data:["Investimento","CPL"],bottom:0,textStyle:{color:P.ink}},
+    xAxis:{type:"category",data:labels,axisLabel:{...axisText,interval:0},axisLine:{lineStyle:{color:P.grid}}},
+    yAxis:{type:"value",axisLabel:axisText,splitLine:{lineStyle:{color:P.grid}}},
+    series:[
+      {name:"Investimento",type:"bar",data:keys.map(k=>+g[k].investido.toFixed(2)),itemStyle:{color:P.navyD},barMaxWidth:80},
+      {name:"CPL",type:"bar",data:keys.map(k=>+((g[k].leads>0?g[k].investido/g[k].leads:0)).toFixed(2)),itemStyle:{color:P.gold},barMaxWidth:80}]});
+  const low=keys.filter(k=>g[k].investido<20);
+  if(low.length){ const k=low[0];
+    el("criativoWarn").innerHTML=`<div class="banner err" style="margin-top:12px"><span>⚠</span>
+      <div><b>Amostra insuficiente para conclusão:</b> ${criativoLabel(k)} (${brl(g[k].investido)}) rodou abaixo de R$ 20,00.</div></div>`; }
+}
+function renderBudgetDist(){
+  const g=mediaByField("criativo"); const keys=Object.keys(g).filter(k=>k!=="—");
+  const total=keys.reduce((s,k)=>s+g[k].investido,0)||1;
+  const sorted=keys.sort((a,b)=>g[b].investido-g[a].investido);
+  if(!sorted.length){ el("budgetDist").innerHTML='<div class="empty">Sem investimento registrado.</div>'; return; }
+  el("budgetDist").innerHTML=sorted.map(k=>{
+    const v=g[k].investido,p=v/total*100,low=v<20;
+    return `<div class="dist-row"><div class="dist-head">
+      <span class="d-left">${criativoLabel(k)} ${low?'<span class="warn">⚠ amostra insuficiente</span>':""}</span>
+      <span class="d-right">${brl(v)} · <b>${p.toFixed(1)}%</b></span></div>
+      <div class="dist-track"><i style="width:${p.toFixed(1)}%;${low?'background:var(--gold-bar)':''}"></i></div></div>`;
+  }).join("");
+}
+function mediaTableRows(g,keys,labelFn,withObs){
+  return keys.map(k=>{const d=g[k];const cpl=d.leads>0?d.investido/d.leads:0;
+    const dash=v=>v>0?v.toLocaleString("pt-BR"):'<span class="dash">—</span>';
+    const low=d.investido<20;
+    return `<tr class="strong"><td>${labelFn(k)}</td>
+      <td class="num">${brl(d.investido)}</td>
+      <td class="num">${dash(d.impressoes)}</td><td class="num">${dash(d.alcance)}</td>
+      <td class="num">${dash(d.cliques)}</td>
+      <td class="num">${d.cliques>0&&d.impressoes>0?(d.cliques/d.impressoes*100).toFixed(2)+"%":'<span class="dash">—</span>'}</td>
+      <td class="num"><span class="dash">—</span></td>
+      <td class="num">${dash(d.leads)}</td>
+      <td class="num">${d.leads>0?brl(cpl):'<span class="dash">—</span>'}</td>
+      ${withObs?`<td>${low?'<span class="warn">⚠ amostra insuficiente</span>':""}</td>`:""}</tr>`;}).join("");
+}
+function renderMediaTables(){
+  const gc=mediaByField("conjunto"),kc=Object.keys(gc).filter(k=>k!=="—");
+  el("conjuntoTbl").innerHTML=`<thead><tr><th>Conjunto</th><th class="num">Investido</th><th class="num">Impressões</th>
+    <th class="num">Alcance</th><th class="num">Cliques</th><th class="num">CTR</th><th class="num">Frequência</th>
+    <th class="num">Leads</th><th class="num">CPL</th></tr></thead><tbody>${
+    kc.length?mediaTableRows(gc,kc,x=>x,false):`<tr><td colspan="9" class="empty">Sem dados de mídia.</td></tr>`}</tbody>`;
+  const gr=mediaByField("criativo"),kr=Object.keys(gr).filter(k=>k!=="—").sort();
+  el("criativoTbl").innerHTML=`<thead><tr><th>Criativo</th><th class="num">Investido</th><th class="num">Impressões</th>
+    <th class="num">Alcance</th><th class="num">Cliques</th><th class="num">CTR</th><th class="num">Frequência</th>
+    <th class="num">Leads</th><th class="num">CPL</th><th>Obs</th></tr></thead><tbody>${
+    kr.length?mediaTableRows(gr,kr,criativoLabel,true):`<tr><td colspan="10" class="empty">Sem dados de mídia.</td></tr>`}</tbody>`;
+  // detalhamento diário
+  const M=mediaInRange().slice().sort((a,b)=>dayOf(b.dia).localeCompare(dayOf(a.dia)));
+  const rows=M.map(m=>{const inv=num(m.investido),lds=num(m.leads);
+    const dash=v=>v>0?v.toLocaleString("pt-BR"):'<span class="dash">—</span>';
+    return `<tr><td>${fmtDateBR(m.dia)}</td><td>${m.conjunto||"—"}</td><td>${m.criativo||"—"}</td>
+      <td class="num">${brl(inv)}</td><td class="num">${dash(num(m.impressoes))}</td>
+      <td class="num">${dash(num(m.alcance))}</td><td class="num">${dash(num(m.cliques))}</td>
+      <td class="num">${m.ctr||'<span class="dash">—</span>'}</td><td class="num">${m.frequencia||'<span class="dash">—</span>'}</td>
+      <td class="num">${dash(lds)}</td><td class="num">${lds>0?brl(inv/lds):'<span class="dash">—</span>'}</td></tr>`;}).join("");
+  el("dailyTbl").innerHTML=`<thead><tr><th>Dia</th><th>Conjunto</th><th>Criativo</th><th class="num">Investido</th>
+    <th class="num">Impressões</th><th class="num">Alcance</th><th class="num">Cliques</th><th class="num">CTR</th>
+    <th class="num">Freq.</th><th class="num">Leads</th><th class="num">CPL</th></tr></thead>
+    <tbody>${rows||`<tr><td colspan="11" class="empty">Sem linhas de mídia no período.</td></tr>`}</tbody>`;
+}
+
+/* ================== RENDER: CRUZADA ================== */
+function crossBy(field){
+  const gl=groupLeadsBy(field), gm=mediaByField(field);
+  const keys=[...new Set([...Object.keys(gl),...Object.keys(gm)])].filter(k=>k!=="—");
+  return keys.map(k=>{
+    const l=gl[k]||{leads:0,quentes:0,agendadas:0,realizadas:0,perdidos:0};
+    const inv=(gm[k]?gm[k].investido:0);
+    const visitas=l.agendadas+l.realizadas;
+    const cpl=l.leads>0?inv/l.leads:0;
+    return {k,inv,leads:l.leads,quentes:l.quentes,visitas,perdidos:l.perdidos,
+      cpl,custoQuente:l.quentes>0?inv/l.quentes:0,custoVisita:visitas>0?inv/visitas:0,
+      investPerdidos:cpl*l.perdidos};
+  }).sort((a,b)=>b.inv-a.inv);
+}
+function renderCruzada(){
+  const conj=crossBy("adset_name"), cri=crossBy("ad_name");
+  // insights
+  const totalInv=computeMedia().invest;
+  const ins=[];
+  const withQuente=conj.filter(c=>c.quentes>0);
+  if(withQuente.length){
+    const best=withQuente.reduce((a,b)=>a.custoQuente<b.custoQuente?a:b);
+    ins.push(`Custo por lead quente: ${conj.map(c=>`${c.k} = ${c.quentes>0?brl(c.custoQuente):"—"}`).join(" · ")}. Melhor eficiência: <b>${best.k}</b>.`);
+  }
+  const withVisita=conj.filter(c=>c.visitas>0);
+  if(withVisita.length){
+    const best=withVisita.reduce((a,b)=>a.custoVisita<b.custoVisita?a:b);
+    ins.push(`Custo por visita: ${conj.map(c=>`${c.k} = ${c.visitas>0?brl(c.custoVisita):"—"}`).join(" · ")}. Melhor eficiência: <b>${best.k}</b>.`);
+  }
+  ins.push(`Recomendação: os conjuntos ganham em métricas diferentes — teste splits controlados antes de realocar budget.`);
+  const investPerdidos=conj.reduce((s,c)=>s+c.investPerdidos,0);
+  const perdidosCount=conj.reduce((s,c)=>s+c.perdidos,0);
+  ins.push(`Investimento em leads perdidos (desqualificados / tentativas esgotadas): <b>${brl(investPerdidos)}</b> (${pctStr(investPerdidos,totalInv)} do total) em ${perdidosCount} leads.`);
+  el("insights").innerHTML = ins.map((t,i)=>`<div class="insight"><span class="i-ico">💡</span><div>${t}</div></div>`).join("")
+    + `<div class="big-lost"><div class="bl-label">Investimento em leads perdidos</div>
+       <div class="bl-value">${brl(investPerdidos)}</div>
+       <div class="bl-sub">${perdidosCount} leads desqualificados · calculado como CPL do conjunto × perdidos, somado por conjunto.</div></div>`;
+
+  el("crossConjuntoTbl").innerHTML=crossTable(conj,x=>x);
+  el("crossCriativoTbl").innerHTML=crossTable(cri,criativoLabel);
+}
+function crossTable(rows,labelFn){
+  const head=`<thead><tr><th>${rows===undefined?"":""}Item</th><th class="num">Investido</th><th class="num">Leads (CRM)</th>
+    <th class="num">Quentes</th><th class="num">Visitas</th><th class="num">Perdidos</th><th class="num">CPL</th>
+    <th class="num">Custo/quente</th><th class="num">Custo/visita</th><th class="num">Invest. perdidos</th></tr></thead>`;
+  const body=rows.map(r=>`<tr class="strong"><td>${labelFn(r.k)}</td>
+    <td class="num">${brl(r.inv)}</td><td class="num">${r.leads}</td><td class="num">${r.quentes}</td>
+    <td class="num">${r.visitas}</td><td class="num">${r.perdidos}</td>
+    <td class="num">${r.leads>0?brl(r.cpl):'<span class="dash">—</span>'}</td>
+    <td class="num">${r.quentes>0?brl(r.custoQuente):'<span class="dash">—</span>'}</td>
+    <td class="num">${r.visitas>0?brl(r.custoVisita):'<span class="dash">—</span>'}</td>
+    <td class="num neg">${r.perdidos>0?brl(r.investPerdidos):'<span class="dash">—</span>'}</td></tr>`).join("");
+  return head+`<tbody>${body||`<tr><td colspan="10" class="empty">Sem dados cruzados no período.</td></tr>`}</tbody>`;
+}
+
+/* ================== CHART UTIL ================== */
+function chart(id,opt){
+  const dom=el(id); if(dom.querySelector(".empty")) dom.innerHTML="";
+  let inst=charts[id];
+  if(!inst || inst.isDisposed && inst.isDisposed()){ inst=echarts.init(dom); charts[id]=inst; }
+  inst.setOption(opt,true); inst.resize();
+}
+window.addEventListener("resize",()=>{Object.values(charts).forEach(c=>{try{c.resize();}catch(e){}});});
+
+/* ================== RENDER ALL ================== */
+function renderAll(){
+  renderKPIs();
+  renderComercial();
+  renderMidia();
+  renderCruzada();
+  // charts hidden in inactive tabs need resize when shown -> handled on tab switch
+}
+
+/* ================== BANNER ================== */
+function banner(html,type="info"){
+  el("banner").innerHTML=`<div class="banner ${type}"><span>${type==="err"?"⚠":"ℹ"}</span><div>${html}</div>
+    <span class="b-close" onclick="this.parentElement.remove()">✕</span></div>`;
+}
+
+/* ================== EVENTS ================== */
+el("rangeSeg").addEventListener("click",e=>{
+  const b=e.target.closest("[data-range]"); if(!b) return;
+  const r=b.dataset.range;
+  if(r==="custom"){
+    const from=prompt("Data inicial (AAAA-MM-DD):",state.from||dayOf(new Date().toISOString()));
+    if(!from) return; const to=prompt("Data final (AAAA-MM-DD):",state.to||dayOf(new Date().toISOString()));
+    if(!to) return; state.from=from; state.to=to;
+  }
+  state.range=r;
+  el("rangeSeg").querySelectorAll(".seg-btn").forEach(x=>x.classList.toggle("active",x===b));
+  renderAll();
+});
+el("tabs").addEventListener("click",e=>{
+  const b=e.target.closest("[data-tab]"); if(!b) return;
+  el("tabs").querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));
+  ["com","mid","crz"].forEach(t=>el("tab-"+t).classList.toggle("hidden",t!==b.dataset.tab));
+  setTimeout(()=>Object.values(charts).forEach(c=>{try{c.resize();}catch(e){}}),30);
+});
+["fSearch","fStatus","fCorretor","fPerfil","fQualif","fPlat"].forEach(id=>{
+  el(id).addEventListener("input",()=>{
+    const key=id.replace("f","").toLowerCase();
+    state.filters[key]=el(id).value; renderLeadsTable();
+  });
+});
+el("metasBtn").onclick=()=>{ el("mLeads").value=state.metas.leads; el("mVisitas").value=state.metas.visitas;
+  el("mVgv").value=state.metas.vgv; el("metasModal").classList.remove("hidden"); };
+el("metasCancel").onclick=()=>el("metasModal").classList.add("hidden");
+el("metasSave").onclick=()=>{ state.metas.leads=+el("mLeads").value||1; state.metas.visitas=+el("mVisitas").value||1;
+  state.metas.vgv=+el("mVgv").value||1; el("metasModal").classList.add("hidden"); renderKPIs(); };
+el("refreshBtn").onclick=()=>init(true);
+
+/* ================== INIT ================== */
+async function init(isRefresh){
+  if(!isRefresh){ state.leads=SEED_LEADS.slice(); state.media=[]; renderAll(); }
+  el("refreshBtn").disabled=true; el("refreshBtn").textContent="⟳ Atualizando…";
+  try{
+    await loadLive();
+    el("banner").innerHTML="";
+    if(!state.media.length){
+      banner(`Leads carregados da planilha. A aba de mídia (<code>${CONFIG.MEDIA_TAB}</code>) veio vazia ou com outro nome — ajuste <code>CONFIG.MEDIA_TAB</code> se o nome da aba for diferente.`,"info");
+    }
+  }catch(err){
+    banner(`Não consegui ler a planilha ao vivo neste ambiente (provável bloqueio de CORS no preview). <b>O dashboard funciona 100% quando hospedado</b> (Lovable / Vercel / Netlify). Para leitura ao vivo, a planilha precisa estar <b>publicada na web</b> ou compartilhada como "qualquer pessoa com o link pode ver". Mostrando o snapshot atual dos leads.`,"err");
+  }finally{
+    el("refreshBtn").disabled=false; el("refreshBtn").textContent="⟳ Atualizar";
+    renderAll();
+  }
+}
+init(false);
+</script>
+</body>
+</html>
